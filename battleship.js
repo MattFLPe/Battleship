@@ -32,7 +32,7 @@ class Gameboard {
                 return false; // If any ship is not sunk, return false
             }
         }
-        return true; // All ships are sunk
+        return true; // All ships are sunk 
     }
 
     createGrid(size) {
