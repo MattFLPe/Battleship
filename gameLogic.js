@@ -45,7 +45,20 @@ class Player {
             this.switchTurns(); 
         }
     }
+
+
+switchTurns() {
+    playerTurn = !playerTurn;
+    if (playerTurn && !this.isComputer) {
+        // If it's now the player's turn and this player is not the computer, enable the event listener
+        enablePlayerAttackListener();
+    } else {
+        // Otherwise, disable the event listener
+        disablePlayerAttackListener()
+    }
+}
 };
+
 
 
 const player = new Player(false); // Real player
