@@ -1,30 +1,52 @@
 const { Ship, Gameboard } = require('./battleship.js');
 const domManager = require('./domManager.js');
 
+
 class Player {
     constructor(isComputer) {
         this.isComputer = isComputer;
         this.gameboard = new Gameboard(10);
     }
-}
 
-const playerAttack = (x, y) => {
-    // Perform attack on computer's game board
-    const result = computer.gameboard.receiveAttack(x, y);
-    
-    // Render game boards
-    domManager.renderGameboard(player);
-    domManager.renderGameboard(computer);
+    attack(x, y) {
+        if (!this.isComputer) {
+            // Player's turn
+            this.playerAttack(x, y);
+        } else {
+            // Computer's turn
+            this.computerAttack();
+        }
+    }
 
-    // Check if game is over
-    if (computer.gameboard.allShipsSunk()) {
-        // End game
-        endGame("Player Wins!");
-    } else {
-        // Trigger computer's turn
-        setTimeout(computerAttack, 1000); // Delay for 1 second for better UX
+    playerAttack(x, y) {
+        const result = this.gameboard.receiveAttack(x, y);
+        domManager.renderGameboard(this);
+        domManager.renderGameboard(this.opponent);
+        if (this.opponent.gameboard.allShipsSunk()) {
+            endGame("Player Wins!");
+        } else {
+            this.switchTurns(); 
+        }
+    }
+
+
+    computerAttack() {
+        let x, y;
+        do {
+            x = getRandomNumber();
+            y = getRandomNumber();
+        } while (this.opponent.gameboard.isCoordinateAttacked(x, y)); // Ensure the computer doesn't attack the same coordinate twice
+        const result = this.opponent.gameboard.receiveAttack(x, y);
+        domManager.renderGameboard(this);
+        domManager.renderGameboard(this.opponent);
+        if (this.opponent.gameboard.allShipsSunk()) {
+            endGame("Computer Wins!");
+        } else {
+            this.switchTurns(); 
+        }
     }
 };
+
 
 const player = new Player(false); // Real player
 const computer = new Player(true);  // Computer player
