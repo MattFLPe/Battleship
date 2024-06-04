@@ -51,11 +51,9 @@ export function handleAttack(event) {
 
     // Check if the game is over
     if (player2.gameboard.allShipsSunk()) {
-      console.log("Player 1 wins!");
-      endGame();
+      endGame("Player 1 wins!");
     } else if (player1.gameboard.allShipsSunk()) {
-      console.log("Player 2 wins!");
-      endGame();
+      endGame("Player 2 wins!");
     } else {
       console.log('Switching turns');
       switchTurns();
@@ -64,6 +62,7 @@ export function handleAttack(event) {
 }
 
 function endGame(winner) {
+  console.log(`Ending game. Winner: ${winner}`);
   const cells = document.querySelectorAll('.cellOpponent');
   cells.forEach(cell => {
       cell.removeEventListener('click', handleAttack);
@@ -78,11 +77,6 @@ function endGame(winner) {
           <button id="restart-button">Restart Game</button>
       `;
       document.body.appendChild(newMessageContainer);
-  } else {
-      messageContainer.innerHTML = `
-          <h2>${winner}</h2>
-          <button id="restart-button">Restart Game</button>
-      `;
   }
 
   document.getElementById('restart-button').addEventListener('click', restartGame);
