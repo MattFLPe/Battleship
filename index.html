@@ -1,16 +1,23 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship Game</title>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <!-- Your HTML content here -->
-
-    <script src="battleshipClasses.js" type="module"></script>
-    <script src="gameLogic.js" type="module"></script>
-    <script src="domManager.js" type="module"></script>
+    <div class="container" id="containerId">
+        <h2 style='margin-right: 20px;'>Your Board</h2>
+        <div class="board" id="player-board"></div>
+        
+        <h2 style='margin: 20px;'>Computer's Board</h2>
+        <div class="board" id="computer-board"></div> 
+    </div>
+    <div class="message"></div>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="gameLogic.js"></script>
+    <script type="module" src="battleship.js"></script> 
+    <script type="module" src="domManager.js" defer></script> 
 </body>
 </html>
