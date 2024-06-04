@@ -1,18 +1,15 @@
 import { Ship, Gameboard, Player } from './battleship.js';
 import { render } from './domManager.js';
-import { player1, player2, initializeGameboardWithRandomShips } from "./main.js"; // Adjust the import path as necessary
+import { player1, player2, initializeGameboardWithRandomShips } from "./main.js"; 
 
 export function switchTurns() {
-  // Toggle the playerTurn property for both players
   player1.playerTurn = !player1.playerTurn;
   player2.playerTurn = !player2.playerTurn;
 
-  // Render the gameboards
   render(player1.gameboard, true);
   render(player2.gameboard, false);
 
 
-  // If it's the computer's turn, perform the computer's attack after a short delay
   if (player2.playerTurn && player2.isComputer) {
     setTimeout(() => {
       const { x, y } = getRandomCoordinates();
@@ -27,7 +24,7 @@ export function switchTurns() {
       } else {
         switchTurns();
       }
-    }, 1000); // Delay for realism
+    }, 1000); 
   }
 }
 
@@ -55,10 +52,10 @@ export function handleAttack(event) {
     // Check if the game is over
     if (player2.gameboard.allShipsSunk()) {
       console.log("Player 1 wins!");
-      endGame("Player 1");
+      endGame();
     } else if (player1.gameboard.allShipsSunk()) {
       console.log("Player 2 wins!");
-      endGame("Player 2");
+      endGame();
     } else {
       console.log('Switching turns');
       switchTurns();
@@ -67,13 +64,11 @@ export function handleAttack(event) {
 }
 
 function endGame(winner) {
-  // Disable further clicks on the opponent's board
   const cells = document.querySelectorAll('.cellOpponent');
   cells.forEach(cell => {
       cell.removeEventListener('click', handleAttack);
   });
 
-  // Display the winner message
   const messageContainer = document.getElementById('message-container');
   if (!messageContainer) {
       const newMessageContainer = document.createElement('div');
@@ -90,26 +85,33 @@ function endGame(winner) {
       `;
   }
 
-  document.getElementById('restart-button').addEventListener('click', restartGame());
+  document.getElementById('restart-button').addEventListener('click', restartGame);
 }
 
 function restartGame() {
   player1.gameboard = new Gameboard();
   player2.gameboard = new Gameboard();
 
-    initializeGameboardWithRandomShips(player1.gameboard);
-    initializeGameboardWithRandomShips(player2.gameboard);
+  initializeGameboardWithRandomShips(player1.gameboard);
+  initializeGameboardWithRandomShips(player2.gameboard);
 
-    player1.playerTurn = true;
-    player2.playerTurn = false;
+  player1.playerTurn = true;
+  player2.playerTurn = false;
 
-    const messageContainer = document.getElementById('message-container');
-    if (messageContainer) {
-        messageContainer.remove();
-    }
+  const messageContainer = document.getElementById('message-container');
+  if (messageContainer) {
+      messageContainer.remove();
+  }
 
-    render(player1.gameboard, true, true);
-    render(player2.gameboard, false, false);
+  render(player1.gameboard, true);
+  render(player2.gameboard, false);
+}
 
-    setupClickListeners();
-  };
+function setupClickListeners() {
+  const playerCells = document.querySelectorAll('.cellOpponent');
+  playerCells.forEach(cell => {
+    cell.addEventListener('click', handleAttack);
+  });
+}
+
+setupClickListeners();
